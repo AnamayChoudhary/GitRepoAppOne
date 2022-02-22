@@ -10,6 +10,5 @@ import com.anamay.demo.model.Customer;
 public interface CustomerService {
 	public Customer addCustomerDto(Customer customer) throws CustomerNotAddedException;
 	public List<Customer> showAllEntries() throws CustomerNotFoundException;
-	public Customer updateCustomer(Customer customer) throws CustomerNotFoundException;
 	public String healthCheckMethod() throws HealthCheckFailed;
 }

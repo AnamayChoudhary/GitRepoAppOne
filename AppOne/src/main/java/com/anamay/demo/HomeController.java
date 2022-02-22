@@ -53,8 +53,8 @@ public class HomeController {
 		
 		LOG.info("Post mapping called for customer:"+customer.getCustomerId());
 		Customer addedCustomer=customerservice.addCustomerDto(customer);
-		ResponseEntity<Customer> response=new ResponseEntity<Customer>(addedCustomer, HttpStatus.OK);
-		LOG.info(addedCustomer.getCustomerName()+" added");
+		ResponseEntity<Customer> response=new ResponseEntity<Customer>(addedCustomer, HttpStatus.CREATED);
+		LOG.info("customer added");
 		return response;
 	
 	}
@@ -69,15 +69,5 @@ public class HomeController {
 
 	}
 	
-	@PutMapping("/updatecustomer")
-	public ResponseEntity updateCustomer(@Validated @RequestBody Customer customer) throws CustomerNotFoundException {
-		LOG.info("Put mapping called for "+customer.getCustomerId());
-		
-		Customer customervo=customerservice.updateCustomer(customer);
-		ResponseEntity<Customer> response=new ResponseEntity<Customer>(customervo, HttpStatus.OK);
-		LOG.info(customervo.getCustomerName()+" updated");
-		return response;
-		
-	}
 
 }

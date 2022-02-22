@@ -78,30 +78,13 @@ public class CustomerServiceImpl implements CustomerService {
 	 */
 	
 	@Override
-	public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
-		LOG.info("updateCustomer called in service layer");
-		Customer customertemp=null;
-		CustomerDto customerdto=mapper.toDto(customer);
-		
-		Optional<CustomerDto> customerdtoretrieved=customerrepository.findById(customerdto.getCustomerId());
-		
-		if(customerdtoretrieved.isEmpty()) {
-			throw new CustomerNotFoundException();
-		}
-		
-		customerdto=customerrepository.save(customerdto);
-		customertemp=mapper.fromDto(customerdto);
-		return customertemp;
-	}
-
-	@Override
 	public String healthCheckMethod() throws HealthCheckFailed {
 		LOG.info("Health check called in service layer");
 		List<CustomerDto> customerdtolist=customerrepository.findAll();
 		if(customerdtolist.isEmpty()) {
 			throw new HealthCheckFailed();
 		}
-		return "Health check Succesfull";
+		return "Health check Successfull";
 	}
 	
 	

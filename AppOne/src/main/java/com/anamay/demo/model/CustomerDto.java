@@ -18,6 +18,17 @@ public class CustomerDto {
 	@NonNull
 	private String customerName;
 	
+	
+	public CustomerDto(int customerId, String customerName) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+	}
+	
+	public CustomerDto() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}

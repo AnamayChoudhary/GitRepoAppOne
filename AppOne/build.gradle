@@ -33,7 +33,10 @@ dependencies {
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.6.0'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config:3.1.0'
-	
+	implementation 'io.cucumber:cucumber-java:7.2.3'
+	implementation 'io.cucumber:cucumber-spring:7.2.3'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+	testImplementation 'io.cucumber:cucumber-junit:7.2.3'
 	
 }
 

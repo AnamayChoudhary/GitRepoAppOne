@@ -1,4 +1,4 @@
-package com.anamay.demo.BO;
+package com.anamay.demo.businessobbject;
 
 import java.util.List;
 
