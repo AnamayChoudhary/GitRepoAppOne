@@ -32,7 +32,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-public class CucumberStepDefinition extends CucumberTest{
+public class CucumberStepDefinition{
 	
 	private List<Customer> expectedCustomers;
 	private List<Customer> actualCustomers;
