@@ -9,6 +9,20 @@ import org.springframework.stereotype.Component;
 public class Customer {
 	
 	private int customerId;
+	
+	
+	public Customer(int customerId, String customerName) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+	}
+	
+	
+	public Customer() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	private String customerName;
 	
 	public int getCustomerId() {
