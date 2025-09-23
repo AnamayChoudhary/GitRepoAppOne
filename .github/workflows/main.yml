@@ -31,10 +31,19 @@ jobs:
                 {"role": "user", "content": $diff}
               ]
             }')
-          review=$(curl -s https://api.openai.com/v1/chat/completions \
+          response=$(curl -s https://api.openai.com/v1/chat/completions \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "$payload" | jq -r '.choices[0].message.content')
+            -d "$payload")
+
+          echo "=== Full OpenAI Response ==="
+          echo "$response"
+
+          review=$(echo "$response | jq -r '.choices[0].message.content')
+
+          echo "=== Extractes Response ==="
+          echo "$review"
+          
           echo "$review" > review.txt
           echo "review<<EOF" >> $GITHUB_ENV
           cat review.txt >> $GITHUB_ENV
