@@ -25,7 +25,7 @@ jobs:
           payload=$(jq -n \
           --arg diff "$(cat pr_diff.txt)" \
           '{
-            "model": "pplx-70b-online",
+            "model": "sonar-deep-research",
             "messages": [
               {"role": "system", "content": "You are a code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise."},
               {"role": "user", "content": $diff}
