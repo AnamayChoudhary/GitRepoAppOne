@@ -3,36 +3,46 @@ name: Auto Review Open PRs
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    
+
 jobs:
   review-prs:
     runs-on: ubuntu-latest
 
     steps:
-     - name: Checkout repo
-       uses: actions/checkout@v4
-     - name: Get PR Diff
-       id: pr
-       run: |
-         gh pr diff ${{github.event.pull_request.number}} > pr_diff.txt
-       env: 
-         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-     - name: Call OpenAI for Review
-       id: ai-review
-       run: |
-         review=$(curl -s https://api.openai.com/v1/responses \
-         -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
-         -H "Content-Type: application/json" \
-         -d "{
-         \"model\":\"gpt-4.1-mini\", \"You are code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise.\\n\\n$(cat pr_diff.txt)\"}" |jq -r '.output[0].content[0].text')
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-         echo "$review" > review.txt
-         echo "review<<EOF" >> $GITHUB_ENV
-         echo "EOF" >> GITHUB_ENV
-     - name: Post Review Comment
-       run: |
-         gh pr comment ${{ github.event.pull_request.number }} --body "$revie"
-       env:
-         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-         review: ${{env.review}}
-  
+      - name: Get PR Diff
+        id: pr
+        run: |
+          gh pr diff ${{ github.event.pull_request.number }} > pr_diff.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Call OpenAI for Review
+        id: ai-review
+        run: |
+          payload=$(jq -n \
+            --arg diff "$(cat pr_diff.txt)" \
+            '{
+              "model": "gpt-4o",
+              "messages": [
+                {"role": "system", "content": "You are a code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise."},
+                {"role": "user", "content": $diff}
+              ]
+            }')
+          review=$(curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" | jq -r '.choices[0].message.content')
+          echo "$review" > review.txt
+          echo "review<<EOF" >> $GITHUB_ENV
+          cat review.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Post Review Comment
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "$review"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          review: ${{ env.review }}
