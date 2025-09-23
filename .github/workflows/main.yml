@@ -23,18 +23,27 @@ jobs:
         id: ai-review
         run: |
           payload=$(jq -n \
-            --arg diff "$(cat pr_diff.txt)" \
-            '{
-              "model": "gpt-4o",
-              "messages": [
-                {"role": "system", "content": "You are a code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise."},
-                {"role": "user", "content": $diff}
-              ]
-            }')
-          review=$(curl -s https://api.openai.com/v1/chat/completions \
-            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+          --arg diff "$(cat pr_diff.txt)" \
+          '{
+            "model": "sonar",
+            "messages": [
+              {"role": "system", "content": "ou are a senior code reviewer. Review the following PR diff and provide feedback as bullet points. Each bullet must reference the relevant line(s) of code in this format: Line X: [feedback]. Each bullet must be concise (max 20 words). Focus on: Bugs or logic errors, Code style and readability, Security or performance issues, Suggestions for improvement. Only include actionable, high-impact feedback."},
+              {"role": "user", "content": $diff}
+            ]
+          }')
+
+          response=$(curl -s https://api.perplexity.ai/chat/completions \
+            -H "Authorization: Bearer ${{ secrets.PPLX_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "$payload" | jq -r '.choices[0].message.content')
+            -d "$payload")
+
+          echo "=== Full Perplexity Response ==="
+          echo "$response"
+
+          review=$(echo "$response" | jq -r '.choices[0].message.content')
+          echo "=== Review ==="
+          echo "$review"
+          
           echo "$review" > review.txt
           echo "review<<EOF" >> $GITHUB_ENV
           cat review.txt >> $GITHUB_ENV
