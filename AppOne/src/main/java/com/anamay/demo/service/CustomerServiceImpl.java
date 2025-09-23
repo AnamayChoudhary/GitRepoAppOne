@@ -25,9 +25,6 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	private static CustomerMapper mapper=new CustomerMapperImpl();
 	private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
-	
-	@Autowired
-	CustomerRepository customerrepository;
 
 	/*
 	 * Method to add a new customer
