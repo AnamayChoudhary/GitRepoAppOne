@@ -23,25 +23,25 @@ jobs:
         id: ai-review
         run: |
           payload=$(jq -n \
-            --arg diff "$(cat pr_diff.txt)" \
-            '{
-              "model": "gpt-4o",
-              "messages": [
-                {"role": "system", "content": "You are a code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise."},
-                {"role": "user", "content": $diff}
-              ]
-            }')
-          response=$(curl -s https://api.openai.com/v1/chat/completions \
-            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+          --arg diff "$(cat pr_diff.txt)" \
+          '{
+            "model": "pplx-70b-online",
+            "messages": [
+              {"role": "system", "content": "You are a code reviewer. Review the following PR diff and suggest improvements, potential bugs, and style issues. Be concise."},
+              {"role": "user", "content": $diff}
+            ]
+          }')
+
+          response=$(curl -s https://api.perplexity.ai/chat/completions \
+            -H "Authorization: Bearer ${{ secrets.PPLX_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d "$payload")
 
-          echo "=== Full OpenAI Response ==="
+          echo "=== Full Perplexity Response ==="
           echo "$response"
 
-          review=$(echo "$response | jq -r '.choices[0].message.content')
-
-          echo "=== Extractes Response ==="
+          review=$(echo "$response" | jq -r '.choices[0].message.content')
+          echo "=== Review ==="
           echo "$review"
           
           echo "$review" > review.txt
