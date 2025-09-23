@@ -27,7 +27,7 @@ jobs:
           '{
             "model": "sonar",
             "messages": [
-              {"role": "system", "content": "ou are a senior code reviewer. Review the following PR diff and provide feedback as bullet points. Each bullet must reference the relevant line(s) of code in this format: Line X: [feedback]. Each bullet must be concise (max 20 words). Focus on: Bugs or logic errors, Code style and readability, Security or performance issues, Suggestions for improvement. Only include actionable, high-impact feedback."},
+              {"role": "system", "content": "ou are a senior code reviewer. Review the following PR diff and provide feedback as bullet points. Each bullet must reference the relevant line(s) of code in this format: Class X,Line Y, (write Code that is being referenced in next line): [feedback, write Suggested Code in next line]. Each bullet must be concise (max 20 words). Focus on: Bugs or logic errors, Code style and readability, Security or performance issues, Suggestions for improvement. Only include actionable, high-impact feedback."},
               {"role": "user", "content": $diff}
             ]
           }')
