@@ -16,6 +16,19 @@ public class Customer {
 		this.customerId = customerId;
 		this.customerName = customerName;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	
 	
 	public Customer() {

@@ -1,6 +1,6 @@
 package com.anamay.demo.exception;
 
-public class CustomerNotAddedException extends Exception {
+public class CustomerNotAddedException{
 	public CustomerNotAddedException(String message) {
 		
 	}

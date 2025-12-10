@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 	
-	@ExceptionHandler
+	@ExceptinHandler
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String customerNotFound(CustomerNotFoundException exception) {
 		return exception.getMessage();
