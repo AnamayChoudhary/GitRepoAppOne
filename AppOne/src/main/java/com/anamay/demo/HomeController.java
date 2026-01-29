@@ -37,7 +37,8 @@ public class HomeController {
         LOG.info("sending hello response");
         return "Hello! This is home page";
     }
-	
+
+	//Healthcheck endpoint
 	@GetMapping("/healthcheck")
 	public ResponseEntity<String> healthCheck() throws HealthCheckFailed{
 		
@@ -47,7 +48,8 @@ public class HomeController {
 		return response;
 	
 	}
-	
+
+	//Endpoint to add customer
 	@PostMapping("/addcustomer")
 	public ResponseEntity addCustomer( @Validated @RequestBody Customer customer) throws CustomerNotAddedException {
 		
@@ -58,7 +60,8 @@ public class HomeController {
 		return response;
 	
 	}
-	
+
+	//Endpoint to show customers
 	@GetMapping("/showcustomers")
 	public ResponseEntity showAllCustomers() throws CustomerNotFoundException{
 		
